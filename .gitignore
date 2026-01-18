@@ -1,0 +1,9 @@
+reports/*
+!reports/.gitkeep
+!reports/sample_hardening_report.md
+!reports/sample_hardening_report.json
+__pycache__/
+*.pyc
+.venv/
+.env
+
