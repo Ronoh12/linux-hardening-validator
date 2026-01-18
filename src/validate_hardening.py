@@ -28,6 +28,60 @@ CONTROL_MAPPINGS = {
     }
 }
 
+RISK_JUSTIFICATIONS = {
+    "SSH Hardening": {
+        "HIGH": "Allowing root login over SSH increases the risk of brute-force attacks and privilege compromise.",
+        "MEDIUM": "Password-based SSH authentication is vulnerable to credential stuffing and brute-force attacks.",
+        "LOW": "SSH is hardened using recommended configurations, reducing unauthorized access risk."
+    },
+    "Firewall Enabled": {
+        "HIGH": "Without an active firewall, the system is exposed to unsolicited network traffic and external attacks.",
+        "LOW": "An active firewall limits network exposure and reduces the attack surface."
+    },
+    "Automatic Updates": {
+        "MEDIUM": "Without automatic updates, known vulnerabilities may remain unpatched and exploitable.",
+        "LOW": "Automatic updates reduce exposure to known security vulnerabilities."
+    },
+    "Password Aging Policy": {
+        "MEDIUM": "Weak or undefined password aging increases the likelihood of compromised credentials being reused.",
+        "LOW": "Password aging policies reduce the risk of long-term credential compromise."
+    }
+# Determine overall risk for justification
+overall_risk = max((c["risk"] for c in result["checks"]), key=lambda x: ["LOW", "MEDIUM", "HIGH"].index(x))
+result["risk_justification"] = RISK_JUSTIFICATIONS["SSH Hardening"][overall_risk]
+risk = "HIGH" if not enabled else "LOW"
+
+return {
+    "control": "Firewall Enabled",
+    "mappings": CONTROL_MAPPINGS.get("Firewall Enabled", {}),
+    "enabled": enabled,
+    "risk": risk,
+    "risk_justification": RISK_JUSTIFICATIONS["Firewall Enabled"][risk],
+    "status": "FAIL" if not enabled else "PASS"
+}
+risk = "MEDIUM" if not enabled else "LOW"
+
+return {
+    "control": "Automatic Updates",
+    "mappings": CONTROL_MAPPINGS.get("Automatic Updates", {}),
+    "enabled": enabled,
+    "risk": risk,
+    "risk_justification": RISK_JUSTIFICATIONS["Automatic Updates"][risk],
+    "status": "FAIL" if not enabled else "PASS"
+}
+risk = "LOW" if "PASS_MAX_DAYS" in defs else "MEDIUM"
+
+return {
+    "control": "Password Aging Policy",
+    "mappings": CONTROL_MAPPINGS.get("Password Aging Policy", {}),
+    "details": defs,
+    "risk": risk,
+    "risk_justification": RISK_JUSTIFICATIONS["Password Aging Policy"][risk],
+    "status": "PASS" if risk == "LOW" else "REVIEW"
+}
+
+
+}
 
 
 def run(cmd: List[str]) -> str:
