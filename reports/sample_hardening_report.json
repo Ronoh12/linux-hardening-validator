@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-01-18T14:44:30.238906",
+  "overall_status": "FAIL",
+  "controls": [
+    {
+      "control": "SSH Hardening",
+      "checks": [],
+      "status": "NOT APPLICABLE"
+    },
+    {
+      "control": "Firewall Enabled",
+      "enabled": false,
+      "risk": "HIGH",
+      "status": "FAIL"
+    },
+    {
+      "control": "Automatic Updates",
+      "enabled": true,
+      "risk": "LOW",
+      "status": "PASS"
+    },
+    {
+      "control": "Password Aging Policy",
+      "details": "#\tPASS_MAX_DAYS\tMaximum number of days a password may be used.\n#\tPASS_MIN_DAYS\tMinimum number of days allowed between password changes.\n#\tPASS_WARN_AGE\tNumber of days warning given before a password expires.\nPASS_MAX_DAYS\t99999\nPASS_MIN_DAYS\t0\nPASS_WARN_AGE\t7",
+      "risk": "LOW",
+      "status": "PASS"
+    }
+  ]
+}
